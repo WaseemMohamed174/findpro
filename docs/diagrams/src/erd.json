@@ -1,0 +1,352 @@
+{
+ "schema_version": 1,
+ "diagram_type": "erd",
+ "meta": {
+  "title": "FindPro - database schema (SQLite)",
+  "locale": "en",
+  "output": "docs/diagrams/erd.html",
+  "quality_profile": "standard"
+ },
+ "layout": {
+  "mode": "grid",
+  "gapY": 38,
+  "gapX": 72
+ },
+ "entities": [
+  {
+   "id": "cities",
+   "label": "cities",
+   "tag": "catalog",
+   "row": 0,
+   "col": 0,
+   "attributes": [
+    {
+     "name": "city_id",
+     "type": "INTEGER",
+     "key": "pk"
+    },
+    {
+     "name": "name",
+     "type": "TEXT"
+    },
+    {
+     "name": "name_norm",
+     "type": "TEXT",
+     "key": "uk"
+    }
+   ]
+  },
+  {
+   "id": "services",
+   "label": "services",
+   "tag": "catalog",
+   "row": 1,
+   "col": 0,
+   "attributes": [
+    {
+     "name": "service_id",
+     "type": "INTEGER",
+     "key": "pk"
+    },
+    {
+     "name": "name",
+     "type": "TEXT"
+    },
+    {
+     "name": "name_norm",
+     "type": "TEXT",
+     "key": "uk"
+    }
+   ]
+  },
+  {
+   "id": "workers",
+   "label": "workers",
+   "tag": "workers",
+   "row": 0,
+   "col": 1,
+   "width": 270,
+   "attributes": [
+    {
+     "name": "worker_id",
+     "type": "INTEGER",
+     "key": "pk"
+    },
+    {
+     "name": "name",
+     "type": "TEXT"
+    },
+    {
+     "name": "name_norm",
+     "type": "TEXT"
+    },
+    {
+     "name": "age",
+     "type": "INTEGER"
+    },
+    {
+     "name": "gender",
+     "type": "TEXT"
+    },
+    {
+     "name": "nationality",
+     "type": "TEXT"
+    },
+    {
+     "name": "city_id",
+     "type": "INTEGER",
+     "key": "fk",
+     "references": "cities.city_id"
+    },
+    {
+     "name": "service_id",
+     "type": "INTEGER",
+     "key": "fk",
+     "references": "services.service_id"
+    },
+    {
+     "name": "experience_years",
+     "type": "INTEGER"
+    },
+    {
+     "name": "rating",
+     "type": "REAL"
+    },
+    {
+     "name": "hourly_rate",
+     "type": "INTEGER"
+    },
+    {
+     "name": "phone",
+     "type": "TEXT"
+    },
+    {
+     "name": "completed_projects",
+     "type": "INTEGER"
+    },
+    {
+     "name": "skills",
+     "type": "TEXT"
+    },
+    {
+     "name": "created_at",
+     "type": "TEXT"
+    }
+   ]
+  },
+  {
+   "id": "worker_vectors",
+   "label": "worker_vectors",
+   "tag": "workers",
+   "row": 1,
+   "col": 1,
+   "width": 270,
+   "attributes": [
+    {
+     "name": "worker_id",
+     "type": "INTEGER",
+     "key": [
+      "pk",
+      "fk"
+     ],
+     "references": "workers.worker_id"
+    },
+    {
+     "name": "model_key",
+     "type": "TEXT"
+    },
+    {
+     "name": "dim",
+     "type": "INTEGER"
+    },
+    {
+     "name": "vec",
+     "type": "BLOB"
+    },
+    {
+     "name": "text_hash",
+     "type": "TEXT"
+    }
+   ]
+  },
+  {
+   "id": "chat_sessions",
+   "label": "chat_sessions",
+   "tag": "chat",
+   "row": 0,
+   "col": 2,
+   "width": 250,
+   "attributes": [
+    {
+     "name": "session_id",
+     "type": "TEXT",
+     "key": "pk"
+    },
+    {
+     "name": "context_json",
+     "type": "TEXT"
+    },
+    {
+     "name": "created_at",
+     "type": "TEXT"
+    },
+    {
+     "name": "last_active",
+     "type": "TEXT"
+    }
+   ]
+  },
+  {
+   "id": "chat_messages",
+   "label": "chat_messages",
+   "tag": "chat",
+   "row": 1,
+   "col": 2,
+   "width": 250,
+   "attributes": [
+    {
+     "name": "message_id",
+     "type": "INTEGER",
+     "key": "pk"
+    },
+    {
+     "name": "session_id",
+     "type": "TEXT",
+     "key": "fk",
+     "references": "chat_sessions.session_id"
+    },
+    {
+     "name": "role",
+     "type": "TEXT"
+    },
+    {
+     "name": "content",
+     "type": "TEXT"
+    },
+    {
+     "name": "intent",
+     "type": "TEXT"
+    },
+    {
+     "name": "created_at",
+     "type": "TEXT"
+    }
+   ]
+  },
+  {
+   "id": "jobs",
+   "label": "jobs",
+   "tag": "background",
+   "row": 0,
+   "col": 3,
+   "width": 250,
+   "attributes": [
+    {
+     "name": "job_id",
+     "type": "INTEGER",
+     "key": "pk"
+    },
+    {
+     "name": "kind",
+     "type": "TEXT"
+    },
+    {
+     "name": "status",
+     "type": "TEXT"
+    },
+    {
+     "name": "label",
+     "type": "TEXT"
+    },
+    {
+     "name": "total",
+     "type": "INTEGER"
+    },
+    {
+     "name": "done",
+     "type": "INTEGER"
+    },
+    {
+     "name": "result_json",
+     "type": "TEXT"
+    },
+    {
+     "name": "error",
+     "type": "TEXT"
+    },
+    {
+     "name": "created_at",
+     "type": "TEXT"
+    },
+    {
+     "name": "finished_at",
+     "type": "TEXT"
+    }
+   ]
+  }
+ ],
+ "relationships": [
+  {
+   "id": "workers_city",
+   "from": "workers",
+   "to": "cities",
+   "label": "in city",
+   "fromCardinality": "many",
+   "toCardinality": "one",
+   "fromOptional": true,
+   "identifying": false
+  },
+  {
+   "id": "workers_service",
+   "from": "workers",
+   "to": "services",
+   "label": "offers",
+   "fromCardinality": "many",
+   "toCardinality": "one",
+   "fromOptional": true,
+   "identifying": false
+  },
+  {
+   "id": "vec_worker",
+   "from": "worker_vectors",
+   "to": "workers",
+   "label": "embeds",
+   "fromCardinality": "one",
+   "toCardinality": "one"
+  },
+  {
+   "id": "msg_session",
+   "from": "chat_messages",
+   "to": "chat_sessions",
+   "label": "belongs to",
+   "fromCardinality": "many",
+   "toCardinality": "one"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Delete behaviour",
+   "items": [
+    "Deleting a city or service sets workers.city_id / service_id to NULL.",
+    "Deleting a worker cascades to its vector row.",
+    "Deleting a chat session cascades to its messages."
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Normalised lookups",
+   "items": [
+    "name_norm is a casefolded, accent-stripped copy used for matching.",
+    "cities and services are unique on name_norm."
+   ]
+  },
+  {
+   "dot": "emerald",
+   "title": "Standalone tables",
+   "items": [
+    "jobs tracks import, reindex and seed progress; it has no foreign keys."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,69 @@
+{"id": "search-01", "category": "search", "turns": ["محتاج كهربائي في المنصورة"], "expect": {"intent": "search", "city": "المنصورة", "service": "كهرباء"}}
+{"id": "search-02", "category": "search", "turns": ["عايز سباك في الدقي"], "expect": {"intent": "search", "city": "الدقي", "service": "سباكة"}}
+{"id": "search-03", "category": "search", "turns": ["ابحثلي عن نجار في مدينة نصر"], "expect": {"intent": "search", "city": "مدينة نصر", "service": "نجارة"}}
+{"id": "search-04", "category": "search", "turns": ["مين أحسن مدرس خصوصي في طنطا؟"], "expect": {"intent": "search", "city": "طنطا", "service": "تدريس خصوصي", "sort": "rating"}}
+{"id": "search-05", "category": "search", "turns": ["i need an ac technician in october"], "expect": {"intent": "search", "city": "أكتوبر", "service": "تكييف وتبريد"}}
+{"id": "search-06", "category": "search", "turns": ["plumber in Maadi"], "expect": {"intent": "search", "city": "المعادي", "service": "سباكة"}}
+{"id": "search-07", "category": "search", "turns": ["فنى تكييف فى المعادى"], "expect": {"intent": "search", "city": "المعادي", "service": "تكييف وتبريد"}}
+{"id": "search-08", "category": "search", "turns": ["في حد بيصلح كمبيوتر في الزقازيق؟"], "expect": {"intent": "search", "city": "الزقازيق", "service": "صيانة كمبيوتر"}}
+{"id": "search-09", "category": "search", "turns": ["الحنفية بتنقط في حلوان وعايز حد يصلحها"], "expect": {"intent": "search", "city": "حلوان", "service": "سباكة"}}
+{"id": "search-10", "category": "search", "turns": ["السبلت مش بيبرد، عايز فني في الشيخ زايد"], "expect": {"intent": "search", "city": "الشيخ زايد", "service": "تكييف وتبريد"}}
+{"id": "search-11", "category": "search", "turns": ["محتاج دكتور أسنان في المنيا"], "expect": {"intent": "search", "city": "المنيا", "service": "طب أسنان"}}
+{"id": "search-12", "category": "search", "turns": ["عايز ممرضة تيجي البيت في بنها"], "expect": {"intent": "search", "city": "بنها", "service": "تمريض"}}
+{"id": "search-13", "category": "search", "turns": ["عايزة حد يحفّظ ابني قرآن في دمياط"], "expect": {"intent": "search", "city": "دمياط", "service": "تعليم قرآن"}}
+{"id": "search-14", "category": "search", "turns": ["مبرمج موبايل في التجمع الخامس"], "expect": {"intent": "search", "city": "التجمع الخامس", "service": "برمجة وتطوير"}}
+{"id": "search-15", "category": "search", "turns": ["عايز أدهن الشقة، مين نقاش كويس في الهرم"], "expect": {"intent": "search", "city": "الهرم", "service": "دهانات"}}
+{"id": "search-16", "category": "search", "turns": ["محتاج حد ينضف الشقة في الرحاب"], "expect": {"intent": "search", "city": "الرحاب", "service": "تنظيف منازل"}}
+{"id": "search-17", "category": "search", "turns": ["كوافير ستات في المهندسين"], "expect": {"intent": "search", "city": "المهندسين", "service": "حلاقة وتصفيف", "gender": "female"}}
+{"id": "search-18", "category": "search", "turns": ["عايز حلاق رجالي في فيصل"], "expect": {"intent": "search", "city": "فيصل", "service": "حلاقة وتصفيف", "gender": "male"}}
+{"id": "search-19", "category": "search", "turns": ["توصيل طلبات في الغردقة"], "expect": {"intent": "search", "city": "الغردقة", "service": "توصيل طلبات"}}
+{"id": "search-20", "category": "search", "turns": ["سواق تاكسي في أسوان"], "expect": {"intent": "search", "city": "أسوان", "service": "سيارة أجرة"}}
+{"id": "search-21", "category": "search", "turns": ["عناية بالبشرة في الزمالك"], "expect": {"intent": "search", "city": "الزمالك", "service": "عناية بالبشرة"}}
+{"id": "search-22", "category": "search", "turns": ["ابحث عن طبيب عام في بورسعيد"], "expect": {"intent": "search", "city": "بورسعيد", "service": "طب عام"}}
+{"id": "search-23", "category": "search", "turns": ["كهربائي"], "expect": {"intent": "search", "city": null, "service": "كهرباء"}}
+{"id": "search-24", "category": "search", "turns": ["الكهربا في ستانلي"], "expect": {"intent": "search", "city": "ستانلي", "service": "كهرباء"}}
+{"id": "search-25", "category": "search", "turns": ["أريد سباكاً في الإسماعيلية"], "expect": {"intent": "search", "city": "الإسماعيلية", "service": "سباكة"}}
+{"id": "search-26", "category": "search", "turns": ["I want a carpenter in Luxor"], "expect": {"intent": "search", "city": "الأقصر", "service": "نجارة"}}
+{"id": "search-27", "category": "search", "turns": ["fanni takyeef fi el haram"], "expect": {"intent": "search", "city": "الهرم", "service": "تكييف وتبريد"}}
+{"id": "filters-01", "category": "filters", "turns": ["أرخص سباك في المنصورة"], "expect": {"intent": "search", "service": "سباكة", "city": "المنصورة", "sort": "rate_asc"}}
+{"id": "filters-02", "category": "filters", "turns": ["أغلى كهربائي في الدقي"], "expect": {"intent": "search", "service": "كهرباء", "city": "الدقي", "sort": "rate_desc"}}
+{"id": "filters-03", "category": "filters", "turns": ["أكتر واحد خبرة في النجارة في أكتوبر"], "expect": {"intent": "search", "service": "نجارة", "city": "أكتوبر", "sort": "experience"}}
+{"id": "filters-04", "category": "filters", "turns": ["كهربائي أقل من 40 سنة في المنيا"], "expect": {"intent": "search", "service": "كهرباء", "city": "المنيا", "age_max": 40, "age_min": null}}
+{"id": "filters-05", "category": "filters", "turns": ["سباك عمره فوق 50 في طنطا"], "expect": {"intent": "search", "service": "سباكة", "city": "طنطا", "age_min": 50, "age_max": null}}
+{"id": "filters-06", "category": "filters", "turns": ["ممرض بين 25 و 35 سنة في الدقي"], "expect": {"intent": "search", "service": "تمريض", "city": "الدقي", "age_min": 25, "age_max": 35}}
+{"id": "filters-07", "category": "filters", "turns": ["مدرسة خصوصي ست في المنصورة"], "expect": {"intent": "search", "service": "تدريس خصوصي", "city": "المنصورة", "gender": "female"}}
+{"id": "filters-08", "category": "filters", "turns": ["نقاش راجل في الشروق"], "expect": {"intent": "search", "service": "دهانات", "city": "الشروق", "gender": "male"}}
+{"id": "count-01", "category": "count", "turns": ["كام سباك في المنصورة؟"], "expect": {"intent": "count", "service": "سباكة", "city": "المنصورة"}}
+{"id": "count-02", "category": "count", "turns": ["عندكم كام مبرمج؟"], "expect": {"intent": "count", "service": "برمجة وتطوير", "city": null}}
+{"id": "count-03", "category": "count", "turns": ["كام ممرضة تحت 30 سنة؟"], "expect": {"intent": "count", "service": "تمريض", "age_max": 30}}
+{"id": "count-04", "category": "count", "turns": ["how many electricians in Tanta"], "expect": {"intent": "count", "service": "كهرباء", "city": "طنطا"}}
+{"id": "person-01", "category": "person", "turns": ["عايز أعرف عن رجب يسري"], "expect": {"intent": "person", "targets_has": ["رجب"], "is_empty": false}}
+{"id": "person-02", "category": "person", "turns": ["مين أمل صفي؟"], "expect": {"intent": "person", "targets_has": ["أمل"], "is_empty": false}}
+{"id": "person-03", "category": "person", "turns": ["رقم تليفون دلال خالد"], "expect": {"intent": "person", "targets_has": ["دلال"], "is_empty": false}}
+{"id": "person-04", "category": "person", "turns": ["ابحث عن بدر الدين زكي"], "expect": {"intent": "person", "targets_has": ["بدر"], "is_empty": false}}
+{"id": "person-05", "category": "person", "turns": ["عايز رقم صفوان رائد السباك"], "expect": {"intent": "person", "targets_has": ["صفوان"], "is_empty": false}}
+{"id": "person-06", "category": "person", "turns": ["عايز أعرف عن زيزو الفضائي"], "expect": {"intent": "person", "targets_has": ["زيزو"], "is_empty": true}}
+{"id": "person-07", "category": "person", "turns": ["رقم ماكسيموس الجلاد"], "expect": {"intent": "person", "targets_has": ["ماكسيموس"], "is_empty": true}}
+{"id": "comparison-01", "category": "comparison", "turns": ["عايز سباك في المنصورة", "قارن بين أول اتنين"], "expect": {"intent": "comparison"}}
+{"id": "comparison-02", "category": "comparison", "turns": ["عايز كهربائي في الدقي", "مين فيهم أحسن؟"], "expect": {"intent": "comparison"}}
+{"id": "comparison-03", "category": "comparison", "turns": ["قارن بين رجب يسري وأمل صفي"], "expect": {"intent": "comparison", "targets_has": ["رجب", "أمل"]}}
+{"id": "followup-01", "category": "followup", "turns": ["عايز نجار في أكتوبر", "بس الستات"], "expect": {"intent": "search", "keep": true, "gender": "female"}}
+{"id": "followup-02", "category": "followup", "turns": ["عايز سباك في طنطا", "الأرخص"], "expect": {"intent": "search", "keep": true, "sort": "rate_asc"}}
+{"id": "followup-03", "category": "followup", "turns": ["كهربائي في المنصورة", "طب في الدقي؟"], "expect": {"intent": "search", "keep": true, "city": "الدقي", "service": "كهرباء"}}
+{"id": "followup-04", "category": "followup", "turns": ["سباك في الهرم", "وفي فيصل؟"], "expect": {"intent": "search", "keep": true, "city": "فيصل", "service": "سباكة"}}
+{"id": "followup-05", "category": "followup", "turns": ["عايز مدرس خصوصي", "أحسن واحد"], "expect": {"intent": "search", "keep": true, "sort": "rating", "service": "تدريس خصوصي"}}
+{"id": "followup-06", "category": "followup", "turns": ["اسمي محمد وساكن في طنطا", "عايز كهربائي"], "expect": {"intent": "search", "service": "كهرباء", "city": "طنطا"}}
+{"id": "chat-01", "category": "chat", "turns": ["مساء الخير"], "expect": {"intent": "chat"}}
+{"id": "chat-02", "category": "chat", "turns": ["شكراً ليك"], "expect": {"intent": "chat"}}
+{"id": "chat-03", "category": "chat", "turns": ["إنت مين؟"], "expect": {"intent": "chat"}}
+{"id": "chat-04", "category": "chat", "turns": ["hello"], "expect": {"intent": "chat"}}
+{"id": "chat-05", "category": "chat", "turns": ["الخدمة بتاعتكم بطيئة جداً"], "expect": {"intent": "chat"}}
+{"id": "chat-06", "category": "chat", "turns": ["إزيك عامل إيه"], "expect": {"intent": "chat"}}
+{"id": "chat-07", "category": "chat", "turns": ["اسمي كريم وساكن في المعادي"], "expect": {"intent": "chat", "user_name": "كريم", "home_city": "المعادي"}}
+{"id": "chat-08", "category": "chat", "turns": ["مين رئيس مصر؟"], "expect": {"intent": "chat"}}
+{"id": "chat-09", "category": "chat", "turns": ["ما هي عاصمة فرنسا؟"], "expect": {"intent": "chat"}}
+{"id": "not_in_catalog-01", "category": "not_in_catalog", "turns": ["عايز طيار خاص"], "expect": {"event": "unknown_entity"}}
+{"id": "not_in_catalog-02", "category": "not_in_catalog", "turns": ["محتاج دكتور بيطري في طنطا"], "expect": {"event": "unknown_entity"}}
+{"id": "not_in_catalog-03", "category": "not_in_catalog", "turns": ["سباك في القاهرة"], "expect": {"intent": "search", "service": "سباكة", "city": null, "ignored_city": true}}
+{"id": "not_in_catalog-04", "category": "not_in_catalog", "turns": ["كهربائي في الإسكندرية"], "expect": {"intent": "search", "service": "كهرباء", "city": null, "ignored_city": true}}
+{"id": "not_in_catalog-05", "category": "not_in_catalog", "turns": ["محتاج شغالين"], "expect": {"event": "clarify"}}

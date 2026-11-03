@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FindPro</title>
+<style>
+:root{--bg:#f4f6f5;--card:#fff;--line:#dde5e2;--text:#1b2b27;--muted:#6b7c77;--brand:#1d6b5c;--brand-t:#fff;--err:#b3261e;--errbg:#fdecea;--ok:#2e9e6b;--warn:#d98a00}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1715;--card:#18221f;--line:#2a3a36;--text:#e6efec;--muted:#8fa39d;--brand:#2f9c86;--err:#ff8a80;--errbg:#3a1f1d}}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;background:var(--bg);color:var(--text)}
+#app{max-width:820px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-bottom:10px;border-bottom:1px solid var(--line)}
+h1{font-size:18px;margin:0;margin-inline-end:auto}
+.pill{font-size:12px;padding:3px 9px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--muted);display:inline-flex;align-items:center;gap:5px}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.pill.ready i{background:var(--ok)}.pill.load i{background:var(--warn)}.pill.bad i{background:var(--err)}
+button,.btn{font:inherit;font-size:13px;padding:5px 11px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer;text-decoration:none}
+button:hover,.btn:hover{border-color:var(--brand)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:8px 0;font-size:13px}
+.tools input[type=file]{display:none}
+#job{flex:1;min-width:140px;font-size:12px;color:var(--muted)}
+#bar{height:4px;background:var(--line);border-radius:4px;margin-top:3px;overflow:hidden;display:none}
+#bar b{display:block;height:100%;width:0;background:var(--brand);transition:width .3s}
+#banner{display:none;margin:4px 0 8px;padding:8px 12px;border-radius:10px;background:var(--errbg);color:var(--err);font-size:13px}
+#log{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:6px 2px;scroll-behavior:smooth}
+.empty{margin:auto;text-align:center;color:var(--muted);font-size:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.msg{padding:10px 14px;border-radius:14px;max-width:88%;white-space:pre-wrap;line-height:1.6;overflow-wrap:anywhere}
+.user{background:var(--brand);color:var(--brand-t);align-self:flex-end}
+.bot{background:var(--card);border:1px solid var(--line);align-self:flex-start}
+.bot.error{background:var(--errbg);border-color:var(--err);color:var(--err)}
+.bot.error button{margin-top:8px;display:block}
+.dots span{display:inline-block;width:6px;height:6px;margin:0 2px;border-radius:50%;background:var(--muted);animation:b 1.2s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+@keyframes b{0%,80%,100%{opacity:.25}40%{opacity:1}}
+.stage{margin-inline-start:8px;font-size:12px;color:var(--muted)}
+.cards{display:grid;gap:8px;margin-top:10px;white-space:normal}
+.card{display:flex;gap:10px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:8px 10px;color:var(--text)}
+.av{width:38px;height:38px;border-radius:50%;background:var(--brand);color:var(--brand-t);display:grid;place-items:center;font-weight:700;flex:none}
+.ci{min-width:0;font-size:13px;line-height:1.5}.ci b{font-size:14px}.ci small,.ci .sm{color:var(--muted);font-size:12px}
+.ci a{color:var(--brand);text-decoration:none;font-weight:600}
+form{display:flex;gap:8px;align-items:flex-end;margin-top:10px}
+textarea{flex:1;resize:none;max-height:140px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font:inherit;font-size:16px;background:var(--card);color:var(--text);outline:none}
+textarea:focus{border-color:var(--brand)}
+#send{padding:10px 18px;font-size:15px;background:var(--brand);color:var(--brand-t);border:0;border-radius:12px}
+#stop{padding:10px 14px;font-size:15px;border-radius:12px}
+.pill.act{cursor:pointer}
+dialog{width:min(640px,94vw);max-height:84dvh;border:1px solid var(--line);border-radius:14px;background:var(--bg);color:var(--text);padding:14px}
+dialog::backdrop{background:#0008}
+.dh{display:flex;gap:8px;align-items:center;margin-bottom:10px}.dh input{flex:1;padding:8px 10px;border:1px solid var(--line);border-radius:10px;font:inherit;background:var(--card);color:var(--text)}
+#wl{display:grid;gap:8px;max-height:60dvh;overflow:auto}
+.row{display:flex;gap:8px;align-items:center}.row .card{flex:1;min-width:0}.row button{color:var(--err)}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+<h1>FindPro</h1>
+<span class="pill" id="p-emb"><i></i><span></span></span>
+<span class="pill" id="p-llm"><i></i><span></span></span>
+<button type="button" id="lang">EN</button>
+<button type="button" id="clear"></button>
+<button type="button" id="wbtn"></button>
+</header>
+<div class="tools">
+<label class="btn" id="l-file"><input type="file" id="file" accept=".xlsx,.xlsm"><span></span></label>
+<a class="btn" id="l-tpl" href="/api/template"></a>
+<button type="button" id="seed"></button>
+<div id="job"><span id="jobtxt"></span><div id="bar"><b></b></div></div>
+</div>
+<div id="banner"></div>
+<div id="log"></div>
+<form id="form">
+<textarea id="text" rows="1" autocomplete="off"></textarea>
+<button id="send"></button><button type="button" id="stop" hidden></button>
+</form>
+</div>
+<dialog id="dlg"><div class="dh"><b id="wt"></b><input id="wq" type="search"><button type="button" id="wx">✕</button></div><div id="wl"></div></dialog>
+<script>
+const S = {
+  ar: {title:"FindPro", tokenAsk:"أدخل رمز الإدارة (FINDPRO_ADMIN_TOKEN)", upload:"رفع Excel", tpl:"القالب", seed:"بيانات تجريبية", clear:"محادثة جديدة", send:"إرسال", stop:"إيقاف", stopped:"(اتوقف)", workers:"العمال", search:"ابحث بالاسم أو التليفون", none:"مفيش نتايج", del:"حذف", sure:"تحذف العامل ده؟", restart:"اضغط لإعادة التشغيل",
+    ph:"اكتب رسالتك... (Enter للإرسال)", hello:"أهلاً! اكتب نوع الخدمة والمدينة وأنا أدورلك على عمال.",
+    chips:["محتاج سباك في القاهرة","كام كهربائي عندكم؟","أحسن نجار تقييماً"],
+    think:"بفكر", st:{understand:"بفهم طلبك", compose:"بكتب الرد"}, retry:"إعادة المحاولة",
+    errNet:"مقدرتش أوصل للسيرفر. اتأكد إنه شغال وجرب تاني.", errEmpty:"السيرفر قفل الاتصال من غير رد. شوف logs/gateway.log.",
+    errTime:"الرد اتأخر أوي (أكتر من دقيقتين). الموديل ممكن يكون لسه بيتحمل.", emb:"البحث", llm:"الموديل",
+    s:{READY:"جاهز",LOADING:"بيتحمل",STARTING:"بيبدأ",CRASHED:"وقع",BACKOFF:"إعادة تشغيل",FAILED:"فشل",STOPPED:"واقف",NOT_INSTALLED:"مش متسطّب",off:"مقفول"},
+    wait:"المساعد لسه بيجهز، الردود ممكن تتأخر أو تبقى بسيطة.", up:"بيرفع...", rows:"صف", bad:"غير صالح", err:"خطأ", h:"ساعة", yr:"سنة"},
+  en: {title:"FindPro", tokenAsk:"Enter the admin token (FINDPRO_ADMIN_TOKEN)", upload:"Upload Excel", tpl:"Template", seed:"Demo data", clear:"New chat", send:"Send", stop:"Stop", stopped:"(stopped)", workers:"Workers", search:"Search name or phone", none:"No results", del:"Delete", sure:"Delete this worker?", restart:"Click to restart",
+    ph:"Type a message... (Enter to send)", hello:"Hi! Tell me the service and city and I'll find workers.",
+    chips:["I need a plumber in Cairo","How many electricians are there?","Best rated carpenter"],
+    think:"Thinking", st:{understand:"Understanding", compose:"Writing reply"}, retry:"Retry",
+    errNet:"Can't reach the server. Make sure it is running and try again.", errEmpty:"The server closed the connection without a reply. Check logs/gateway.log.",
+    errTime:"The reply took too long (over 2 minutes). The model may still be loading.", emb:"Search", llm:"Model",
+    s:{READY:"ready",LOADING:"loading",STARTING:"starting",CRASHED:"crashed",BACKOFF:"restarting",FAILED:"failed",STOPPED:"stopped",NOT_INSTALLED:"not installed",off:"off"},
+    wait:"The assistant is still starting up; replies may be slow or basic.", up:"Uploading...", rows:"rows", bad:"invalid", err:"error", h:"h", yr:"yrs"}
+};
+const $ = id => document.getElementById(id);
+const log = $("log"), box = $("text");
+const newSid = () => { const a = new Uint8Array(16); crypto.getRandomValues(a);
+  return "s" + Array.from(a, b => b.toString(16).padStart(2, "0")).join(""); };
+const validSid = v => /^[A-Za-z0-9_-]{8,64}$/.test(v || "");
+let L = "ar", sid = newSid(), busy = false;
+try { L = localStorage.getItem("lang") || ((navigator.language || "").startsWith("ar") ? "ar" : "en");
+      const saved = sessionStorage.getItem("sid"); if (validSid(saved)) sid = saved; sessionStorage.setItem("sid", sid); } catch (e) {}
+const t = () => S[L];
+
+function applyLang() {
+  document.documentElement.lang = L; document.documentElement.dir = L === "ar" ? "rtl" : "ltr";
+  $("lang").textContent = L === "ar" ? "EN" : "عربي";
+  $("l-file").lastElementChild.textContent = t().upload; $("l-tpl").textContent = t().tpl;
+  $("seed").textContent = t().seed; $("clear").textContent = t().clear; $("send").textContent = t().send; $("stop").textContent = t().stop; $("wbtn").textContent = t().workers; $("wt").textContent = t().workers; $("wq").placeholder = t().search;
+  box.placeholder = t().ph; pollStatus();
+  if (!log.querySelector(".msg")) renderEmpty();
+}
+function renderEmpty() {
+  log.innerHTML = "";
+  const d = document.createElement("div"); d.className = "empty";
+  d.append(t().hello);
+  const c = document.createElement("div"); c.className = "chips";
+  for (const s of t().chips) { const b = document.createElement("button"); b.type = "button"; b.textContent = s; b.onclick = () => send(s); c.append(b); }
+  d.append(c); log.append(d);
+}
+function addMsg(cls, text) {
+  const e = log.querySelector(".empty"); if (e) e.remove();
+  const d = document.createElement("div"); d.className = "msg " + cls; d.dir = "auto"; d.textContent = text;
+  log.append(d); log.scrollTop = log.scrollHeight; return d;
+}
+function typing(el, label) {
+  el.innerHTML = '<span class="dots"><span></span><span></span><span></span></span>';
+  const s = document.createElement("span"); s.className = "stage"; s.textContent = label; el.append(s);
+}
+function card(w) {
+  const c = document.createElement("div"); c.className = "card";
+  const av = document.createElement("div"); av.className = "av"; av.textContent = (w.name || "?").trim().charAt(0).toUpperCase();
+  const i = document.createElement("div"); i.className = "ci";
+  const n = document.createElement("b"); n.textContent = w.name || "?"; i.append(n);
+  const isolate = (parts) => { const d = document.createElement("div");
+    parts.forEach((p, k) => { if (k) d.append(" · "); const b = document.createElement("bdi"); b.textContent = p; d.append(b); }); return d; };
+  const sub = [w.service_name, w.city_name, w.experience_years != null ? w.experience_years + " " + t().yr : null].filter(Boolean);
+  if (sub.length) i.append(isolate(sub));
+  const bits = [w.rating != null ? "★ " + w.rating : null, w.hourly_rate != null ? w.hourly_rate + " / " + t().h : null].filter(Boolean);
+  if (bits.length) { const s = isolate(bits); s.className = "sm"; i.append(s); }
+  if (w.phone) { const p = document.createElement("div"), a = document.createElement("a");
+    a.href = "tel:" + String(w.phone).replace(/[^\d+]/g, ""); a.textContent = w.phone; a.dir = "ltr"; p.append(a); i.append(p); }
+  c.append(av, i); return c;
+}
+function fail(el, text, msg) {
+  el.className = "msg bot error"; el.textContent = msg;
+  const b = document.createElement("button"); b.type = "button"; b.textContent = t().retry;
+  b.onclick = () => { el.previousElementSibling?.remove(); el.remove(); send(text); }; el.append(b);
+}
+async function errText(res) {
+  try { const j = await res.json(); const d = j.detail;
+    return "HTTP " + res.status + ": " + (Array.isArray(d) ? d.map(x => x.msg).join("; ") : d || res.statusText);
+  } catch (e) { return "HTTP " + res.status + " " + res.statusText; }
+}
+let cur = null, userStop = false;
+function setBusy(v) { busy = v; $("send").hidden = v; $("stop").hidden = !v; }
+
+async function send(text) {
+  text = (text || "").trim(); if (!text || busy) return;
+  setBusy(true); addMsg("user", text);
+  const el = addMsg("bot", ""); typing(el, t().think);
+  const ac = cur = new AbortController(); userStop = false; const timer = setTimeout(() => ac.abort(), 120000);
+  let started = false, finished = false;
+  try {
+    const res = await fetch("/api/chat/stream", { method: "POST", signal: ac.signal,
+      headers: { "Content-Type": "application/json" }, body: JSON.stringify({ session_id: sid, text }) });
+    if (!res.ok) throw new Error(await errText(res));
+    const reader = res.body.getReader(), dec = new TextDecoder(); let buf = "";
+    for (;;) {
+      const { value, done } = await reader.read(); if (done) break;
+      buf += dec.decode(value, { stream: true }).replace(/\r\n/g, "\n");
+      let i;
+      while ((i = buf.indexOf("\n\n")) >= 0) {
+        const line = buf.slice(0, i).trim(); buf = buf.slice(i + 2);
+        if (!line.startsWith("data:")) continue;
+        let ev; try { ev = JSON.parse(line.slice(5)); } catch (e) { continue; }
+        if (ev.type === "stage" && !started) typing(el, t().st[ev.stage] || t().think);
+        else if (ev.type === "token") { if (!started) { el.textContent = ""; started = true; } el.textContent += ev.text; }
+        else if (ev.type === "done") {
+          finished = true; started = true; el.textContent = ev.text || "";
+          if (ev.dir) el.dir = ev.dir;
+          if (ev.workers && ev.workers.length) { const g = document.createElement("div"); g.className = "cards";
+            ev.workers.forEach(w => g.append(card(w))); el.append(g); }
+          if (ev.intent === "error") el.classList.add("error");
+        }
+        log.scrollTop = log.scrollHeight;
+      }
+    }
+    if (!finished) fail(el, text, t().errEmpty);
+  } catch (e) {
+    if (userStop) { if (started) el.append(" " + t().stopped); else el.remove(); return; }
+    const m = e.name === "AbortError" ? t().errTime : (e instanceof TypeError ? t().errNet : e.message);
+    fail(el, text, m);
+  } finally { clearTimeout(timer); cur = null; setBusy(false); box.focus(); }
+}
+
+async function pollStatus() {
+  const set = (id, name, st, pct) => { const p = $(id); const dead = ["CRASHED", "FAILED", "STOPPED"].includes(st); p.classList.toggle("act", dead); p.title = dead ? t().restart : ""; p.onclick = dead ? () => adminFetch("/api/system/restart/" + (id === "p-emb" ? "embedder" : "llm"), { method: "POST" }).then(pollStatus) : null; p.lastElementChild.textContent = name + ": " + (t().s[st] || st) + (st === "LOADING" && pct ? " " + pct + "%" : "");
+    p.className = "pill " + (dead ? "act " : "") + (st === "READY" ? "ready" : ["LOADING", "STARTING", "BACKOFF"].includes(st) ? "load" : ["CRASHED", "FAILED"].includes(st) ? "bad" : ""); };
+  try {
+    const r = await fetch("/api/system/status"); const w = (await r.json()).workers || {};
+    const e = w.embedder || {}, l = w.llm || {};
+    set("p-emb", t().emb, e.state || "NOT_INSTALLED", e.progress); set("p-llm", t().llm, l.state || "off", l.progress);
+    const ok = e.state === "READY" || l.state === "READY";
+    $("banner").style.display = ok ? "none" : "block"; $("banner").textContent = t().wait;
+  } catch (e) { $("banner").style.display = "block"; $("banner").textContent = t().errNet; }
+}
+
+async function watchJob(id) {
+  const bar = $("bar"), fill = bar.firstElementChild; bar.style.display = "block";
+  for (;;) {
+    let j; try { j = ((await (await fetch("/api/jobs?limit=10")).json()).items || []).find(x => x.job_id === id); } catch (e) { break; }
+    if (!j) break;
+    $("jobtxt").textContent = j.label + ": " + j.progress + "%" + (j.error ? " — " + j.error : ""); fill.style.width = j.progress + "%";
+    if (j.status !== "running" && j.status !== "queued") break;
+    await new Promise(r => setTimeout(r, 1000));
+  }
+  setTimeout(() => { bar.style.display = "none"; }, 2500);
+}
+async function started(res) {
+  let d = {}; try { d = await res.json(); } catch (e) {}
+  if (res.ok && d.job_id) {
+    if (d.rows != null) $("jobtxt").textContent = d.rows + " " + t().rows + (d.invalid_rows ? " · " + d.invalid_rows + " " + t().bad : "");
+    watchJob(d.job_id);
+  } else $("jobtxt").textContent = t().err + ": " + (typeof d.detail === "string" ? d.detail : res.status);
+}
+async function adminFetch(url, opts = {}) {
+  const go = () => { let tok = ""; try { tok = sessionStorage.getItem("admtok") || ""; } catch (e) {}
+    return fetch(url, { ...opts, headers: { ...(opts.headers || {}), ...(tok ? { "X-Admin-Token": tok } : {}) } }); };
+  let res = await go();
+  if (res.status === 401) {
+    const tok = prompt(t().tokenAsk);
+    if (tok) { try { sessionStorage.setItem("admtok", tok); } catch (e) {} res = await go(); }
+  }
+  return res;
+}
+async function call(url, opts) { try { started(await adminFetch(url, opts)); } catch (e) { $("jobtxt").textContent = t().errNet; } }
+
+$("seed").onclick = () => call("/api/seed_demo", { method: "POST" });
+$("file").onchange = e => { const f = e.target.files[0]; if (!f) return; const fd = new FormData(); fd.append("file", f);
+  $("jobtxt").textContent = t().up; call("/api/upload", { method: "POST", body: fd }); e.target.value = ""; };
+$("lang").onclick = () => { L = L === "ar" ? "en" : "ar"; try { localStorage.setItem("lang", L); } catch (e) {} applyLang(); };
+$("clear").onclick = () => { sid = newSid(); try { sessionStorage.setItem("sid", sid); } catch (e) {} renderEmpty(); };
+$("form").addEventListener("submit", e => { e.preventDefault(); const v = box.value; box.value = ""; box.style.height = "auto"; send(v); });
+box.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); $("form").requestSubmit(); } });
+box.addEventListener("input", () => { box.style.height = "auto"; box.style.height = Math.min(box.scrollHeight, 140) + "px"; });
+
+$("stop").onclick = () => { userStop = true; if (cur) cur.abort(); };
+async function loadHistory() {
+  try { const items = (await (await fetch("/api/history/" + sid)).json()).items || [];
+    if (!items.length) return; log.innerHTML = "";
+    for (const m of items) addMsg(m.role === "user" ? "user" : "bot" + (m.intent === "error" ? " error" : ""), m.content);
+  } catch (e) {}
+}
+let wtimer;
+async function loadWorkers() {
+  const wl = $("wl"); wl.textContent = "...";
+  try { const d = await (await fetch("/api/workers?limit=50&q=" + encodeURIComponent($("wq").value.trim()))).json();
+    $("wt").textContent = t().workers + " (" + d.total + ")"; wl.textContent = "";
+    if (!d.items.length) wl.textContent = t().none;
+    for (const w of d.items) { const r = document.createElement("div"); r.className = "row"; r.append(card(w));
+      const b = document.createElement("button"); b.type = "button"; b.textContent = t().del;
+      b.onclick = async () => { if (!confirm(t().sure)) return; await adminFetch("/api/workers/" + w.worker_id, { method: "DELETE" }); loadWorkers(); };
+      r.append(b); wl.append(r); }
+  } catch (e) { wl.textContent = t().errNet; }
+}
+$("wbtn").onclick = () => { $("dlg").showModal(); loadWorkers(); };
+$("wx").onclick = () => $("dlg").close();
+$("wq").oninput = () => { clearTimeout(wtimer); wtimer = setTimeout(loadWorkers, 300); };
+applyLang(); loadHistory(); setInterval(pollStatus, 4000);
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+{
+ "schema_version": 2,
+ "diagram_type": "workflow",
+ "meta": {
+  "title": "FindPro - chat request workflow",
+  "animation": "trace",
+  "quality_profile": "showcase",
+  "output": "docs/diagrams/workflow.html"
+ },
+ "lanes": [
+  {
+   "id": "ui",
+   "label": "Browser"
+  },
+  {
+   "id": "gw",
+   "label": "Gateway (FastAPI)"
+  },
+  {
+   "id": "wk",
+   "label": "Model workers"
+  },
+  {
+   "id": "db",
+   "label": "SQLite"
+  }
+ ],
+ "mainPath": [
+  "user",
+  "ui",
+  "api",
+  "nlu",
+  "route",
+  "sql",
+  "rerank",
+  "compose",
+  "reply"
+ ],
+ "nodes": [
+  {
+   "id": "user",
+   "lane": "ui",
+   "col": 0,
+   "type": "external",
+   "label": "User",
+   "sublabel": "asks in any language"
+  },
+  {
+   "id": "ui",
+   "lane": "ui",
+   "col": 1,
+   "type": "frontend",
+   "label": "Chat UI",
+   "sublabel": "web/index.html"
+  },
+  {
+   "id": "api",
+   "lane": "gw",
+   "col": 1,
+   "type": "backend",
+   "label": "/api/chat/stream",
+   "sublabel": "chat.handle_stream"
+  },
+  {
+   "id": "nlu",
+   "lane": "gw",
+   "col": 2,
+   "type": "backend",
+   "label": "Understand",
+   "sublabel": "nlu.understand"
+  },
+  {
+   "id": "llm1",
+   "lane": "wk",
+   "col": 2,
+   "type": "cloud",
+   "label": "LLM worker",
+   "sublabel": "JSON intent + filters",
+   "tag": "local"
+  },
+  {
+   "id": "route",
+   "lane": "gw",
+   "col": 3,
+   "type": "backend",
+   "label": "Route",
+   "sublabel": "search.run"
+  },
+  {
+   "id": "sql",
+   "lane": "db",
+   "col": 3,
+   "type": "database",
+   "label": "Filter rows",
+   "sublabel": "city, service, gender, age"
+  },
+  {
+   "id": "rerank",
+   "lane": "wk",
+   "col": 4,
+   "type": "cloud",
+   "label": "Embedder worker",
+   "sublabel": "rank top-K by meaning",
+   "tag": "local"
+  },
+  {
+   "id": "clarify",
+   "lane": "gw",
+   "col": 4,
+   "type": "security",
+   "label": "Clarify",
+   "sublabel": "no filters given"
+  },
+  {
+   "id": "compose",
+   "lane": "gw",
+   "col": 5,
+   "type": "backend",
+   "label": "Compose reply",
+   "sublabel": "facts + history to LLM"
+  },
+  {
+   "id": "llm2",
+   "lane": "wk",
+   "col": 5,
+   "type": "cloud",
+   "label": "LLM worker",
+   "sublabel": "streams tokens",
+   "tag": "local"
+  },
+  {
+   "id": "ctx",
+   "lane": "db",
+   "col": 5,
+   "type": "database",
+   "label": "Save session",
+   "sublabel": "messages + context"
+  },
+  {
+   "id": "reply",
+   "lane": "ui",
+   "col": 5,
+   "type": "frontend",
+   "label": "Streamed answer",
+   "sublabel": "cards + text"
+  }
+ ],
+ "edges": [
+  {
+   "id": "e1",
+   "from": "user",
+   "to": "ui",
+   "variant": "default"
+  },
+  {
+   "id": "e2",
+   "from": "ui",
+   "to": "api",
+   "variant": "emphasis",
+   "label": "POST message"
+  },
+  {
+   "id": "e3",
+   "from": "api",
+   "to": "nlu",
+   "variant": "default"
+  },
+  {
+   "id": "e4",
+   "from": "nlu",
+   "to": "llm1",
+   "variant": "dashed",
+   "label": "parse",
+   "role": "branch"
+  },
+  {
+   "id": "e5",
+   "from": "nlu",
+   "to": "route",
+   "variant": "emphasis",
+   "label": "spec"
+  },
+  {
+   "id": "e6",
+   "from": "route",
+   "to": "sql",
+   "variant": "emphasis",
+   "label": "query"
+  },
+  {
+   "id": "e7",
+   "from": "sql",
+   "to": "rerank",
+   "variant": "emphasis",
+   "label": "candidate ids"
+  },
+  {
+   "id": "e8",
+   "from": "route",
+   "to": "clarify",
+   "variant": "security",
+   "label": "unconstrained",
+   "role": "branch"
+  },
+  {
+   "id": "e9",
+   "from": "rerank",
+   "to": "compose",
+   "variant": "emphasis",
+   "label": "top-K"
+  },
+  {
+   "id": "e10",
+   "from": "clarify",
+   "to": "compose",
+   "variant": "dashed",
+   "label": "ask user",
+   "role": "branch",
+   "fromSide": "top",
+   "toSide": "top"
+  },
+  {
+   "id": "e11",
+   "from": "compose",
+   "to": "llm2",
+   "variant": "dashed",
+   "label": "stream",
+   "role": "branch"
+  },
+  {
+   "id": "e12",
+   "from": "compose",
+   "to": "ctx",
+   "variant": "dashed",
+   "label": "persist",
+   "role": "branch"
+  },
+  {
+   "id": "e13",
+   "from": "compose",
+   "to": "reply",
+   "variant": "emphasis",
+   "label": "SSE tokens"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "cyan",
+   "title": "Two local workers",
+   "items": [
+    "The LLM and the embedder run as separate subprocesses.",
+    "The gateway calls them over 127.0.0.1 with a worker token."
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "Routes",
+   "items": [
+    "SQL route for sorted queries (best rated, cheapest).",
+    "Semantic route re-ranks matches with embeddings.",
+    "Fallback widens the city when nothing matches."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,458 @@
+{
+ "schema_version": 1,
+ "diagram_type": "class",
+ "meta": {
+  "title": "FindPro - runtime classes",
+  "output": "docs/diagrams/uml-class.html",
+  "quality_profile": "standard"
+ },
+ "layout": {
+  "mode": "grid",
+  "gapX": 130
+ },
+ "types": [
+  {
+   "id": "remote",
+   "label": "_Remote",
+   "kind": "abstract",
+   "sublabel": "HTTP client; finds its worker via Supervisor.get_worker()",
+   "row": 0,
+   "col": 0,
+   "attributes": [
+    {
+     "name": "name",
+     "type": "str",
+     "visibility": "protected"
+    }
+   ],
+   "methods": [
+    {
+     "name": "ready",
+     "parameters": "",
+     "returns": "bool",
+     "visibility": "public"
+    },
+    {
+     "name": "_open",
+     "parameters": "path, payload, timeout, stream",
+     "returns": "response",
+     "visibility": "protected"
+    }
+   ]
+  },
+  {
+   "id": "embedder",
+   "label": "Embedder",
+   "kind": "class",
+   "sublabel": "Text to vectors",
+   "row": 1,
+   "col": 0,
+   "methods": [
+    {
+     "name": "embed",
+     "parameters": "texts, kind",
+     "returns": "list[vector]",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "llm",
+   "label": "LLM",
+   "kind": "class",
+   "sublabel": "Chat completion client",
+   "row": 2,
+   "col": 0,
+   "methods": [
+    {
+     "name": "chat",
+     "parameters": "messages, json_mode",
+     "returns": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "stream",
+     "parameters": "messages",
+     "returns": "Iterator[str]",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "supervisor",
+   "label": "Supervisor",
+   "kind": "class",
+   "sublabel": "Starts and watches the workers",
+   "row": 0,
+   "col": 1.5,
+   "attributes": [
+    {
+     "name": "_workers",
+     "type": "dict[str, ManagedProcess]",
+     "visibility": "private"
+    }
+   ],
+   "methods": [
+    {
+     "name": "start_all",
+     "parameters": "llm_enabled",
+     "returns": "None",
+     "visibility": "public"
+    },
+    {
+     "name": "get_worker",
+     "parameters": "name",
+     "returns": "ManagedProcess",
+     "visibility": "public"
+    },
+    {
+     "name": "restart",
+     "parameters": "name",
+     "returns": "None",
+     "visibility": "public"
+    },
+    {
+     "name": "status",
+     "parameters": "",
+     "returns": "dict",
+     "visibility": "public"
+    },
+    {
+     "name": "stop_all",
+     "parameters": "",
+     "returns": "None",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "managed",
+   "label": "ManagedProcess",
+   "kind": "class",
+   "sublabel": "One worker subprocess",
+   "row": 1,
+   "col": 1.5,
+   "attributes": [
+    {
+     "name": "name",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "port",
+     "type": "int",
+     "visibility": "public"
+    },
+    {
+     "name": "status",
+     "type": "Status",
+     "visibility": "public"
+    }
+   ],
+   "methods": [
+    {
+     "name": "start",
+     "parameters": "",
+     "returns": "None",
+     "visibility": "public"
+    },
+    {
+     "name": "stop",
+     "parameters": "",
+     "returns": "None",
+     "visibility": "public"
+    },
+    {
+     "name": "restart",
+     "parameters": "",
+     "returns": "None",
+     "visibility": "public"
+    },
+    {
+     "name": "is_ready",
+     "parameters": "",
+     "returns": "bool",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "status",
+   "label": "Status",
+   "kind": "record",
+   "sublabel": "Dataclass: state, progress, pid",
+   "row": 2,
+   "col": 1.5,
+   "attributes": [
+    {
+     "name": "state",
+     "type": "State",
+     "visibility": "public"
+    },
+    {
+     "name": "progress",
+     "type": "int",
+     "visibility": "public"
+    },
+    {
+     "name": "pid",
+     "type": "int | None",
+     "visibility": "public"
+    },
+    {
+     "name": "restarted_count",
+     "type": "int",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "state",
+   "label": "State",
+   "kind": "enum",
+   "sublabel": "Worker lifecycle",
+   "row": 3,
+   "col": 1.5,
+   "attributes": [
+    {
+     "name": "NOT_INSTALLED",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "STARTING",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "LOADING",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "READY",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "CRASHED",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "BACKOFF",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "FAILED",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "STOPPED",
+     "type": "str",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "bus",
+   "label": "EventBus",
+   "kind": "class",
+   "sublabel": "Publish / subscribe for SSE",
+   "row": 1,
+   "col": 3,
+   "methods": [
+    {
+     "name": "publish",
+     "parameters": "kind, source, payload",
+     "returns": "None",
+     "visibility": "public"
+    },
+    {
+     "name": "subscribe",
+     "parameters": "",
+     "returns": "(queue, history)",
+     "visibility": "public"
+    },
+    {
+     "name": "unsubscribe",
+     "parameters": "q",
+     "returns": "None",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "event",
+   "label": "Event",
+   "kind": "record",
+   "sublabel": "Dataclass: kind, source, payload, ts",
+   "row": 2,
+   "col": 3,
+   "attributes": [
+    {
+     "name": "kind",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "source",
+     "type": "str",
+     "visibility": "public"
+    },
+    {
+     "name": "payload",
+     "type": "dict",
+     "visibility": "public"
+    },
+    {
+     "name": "ts",
+     "type": "float",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "store",
+   "label": "Store",
+   "kind": "class",
+   "sublabel": "SQLite access (src/db.py)",
+   "row": 3,
+   "col": 0,
+   "methods": [
+    {
+     "name": "workers",
+     "parameters": "ids",
+     "returns": "list[dict]",
+     "visibility": "public"
+    },
+    {
+     "name": "filter_ids",
+     "parameters": "city_id, service_id, ...",
+     "returns": "list[int]",
+     "visibility": "public"
+    },
+    {
+     "name": "search_vectors",
+     "parameters": "query_vec, ids, model_key, k",
+     "returns": "list",
+     "visibility": "public"
+    },
+    {
+     "name": "load_ctx / save_ctx",
+     "parameters": "session_id",
+     "returns": "dict",
+     "visibility": "public"
+    },
+    {
+     "name": "job_begin / job_finish",
+     "parameters": "...",
+     "returns": "job_id",
+     "visibility": "public"
+    }
+   ]
+  },
+  {
+   "id": "hardware",
+   "label": "Hardware",
+   "kind": "record",
+   "sublabel": "Dataclass: RAM, cores, GPU, CUDA",
+   "row": 0,
+   "col": 3,
+   "attributes": [
+    {
+     "name": "ram_total",
+     "type": "float",
+     "visibility": "public"
+    },
+    {
+     "name": "vram_total",
+     "type": "float",
+     "visibility": "public"
+    },
+    {
+     "name": "gpu_available",
+     "type": "bool",
+     "visibility": "public"
+    }
+   ],
+   "methods": [
+    {
+     "name": "safe_ram",
+     "parameters": "",
+     "returns": "float",
+     "visibility": "public"
+    },
+    {
+     "name": "safe_vram",
+     "parameters": "",
+     "returns": "float",
+     "visibility": "public"
+    }
+   ]
+  }
+ ],
+ "relationships": [
+  {
+   "id": "emb_inh",
+   "from": "embedder",
+   "to": "remote",
+   "kind": "inheritance"
+  },
+  {
+   "id": "llm_inh",
+   "from": "llm",
+   "to": "remote",
+   "kind": "inheritance"
+  },
+  {
+   "id": "remote_sup",
+   "from": "remote",
+   "to": "supervisor",
+   "kind": "dependency"
+  },
+  {
+   "id": "sup_proc",
+   "from": "supervisor",
+   "to": "managed",
+   "kind": "composition",
+   "label": "owns"
+  },
+  {
+   "id": "proc_status",
+   "from": "managed",
+   "to": "status",
+   "kind": "composition"
+  },
+  {
+   "id": "status_state",
+   "from": "status",
+   "to": "state",
+   "kind": "association",
+   "label": "state"
+  },
+  {
+   "id": "proc_bus",
+   "from": "managed",
+   "to": "bus",
+   "kind": "dependency",
+   "label": "publishes"
+  },
+  {
+   "id": "bus_event",
+   "from": "bus",
+   "to": "event",
+   "kind": "composition",
+   "label": "keeps"
+  },
+  {
+   "id": "sup_hw",
+   "from": "supervisor",
+   "to": "hardware",
+   "kind": "dependency",
+   "label": "sizes"
+  }
+ ]
+}

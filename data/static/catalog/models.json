@@ -1,0 +1,103 @@
+{
+  "defaults": {
+    "embedder": "multilingual-e5-small",
+    "llm": "Qwen2.5-3B-Instruct"
+  },
+  "embedders": [
+    {
+      "key": "paraphrase-multilingual-MiniLM-L12-v2",
+      "repo": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+      "params": "118M",
+      "size_gb": 0.47,
+      "dim": 384,
+      "passage_prefix": "",
+      "query_prefix": "",
+      "max_seq_length": 128,
+      "files": ["*.json", "*.txt", "*.model", "*.safetensors", "1_Pooling/*"],
+      "ignore": ["*.bin", "*.onnx", "onnx/*", "openvino/*", "*.h5", "*.msgpack"]
+    },
+    {
+      "key": "multilingual-e5-small",
+      "repo": "intfloat/multilingual-e5-small",
+      "params": "118M",
+      "size_gb": 0.47,
+      "dim": 384,
+      "passage_prefix": "passage: ",
+      "query_prefix": "query: ",
+      "max_seq_length": 512,
+      "files": ["*.json", "*.txt", "*.model", "*.safetensors", "1_Pooling/*"],
+      "ignore": ["*.bin", "*.onnx", "onnx/*", "openvino/*", "*.h5", "*.msgpack"]
+    },
+    {
+      "key": "multilingual-e5-base",
+      "repo": "intfloat/multilingual-e5-base",
+      "params": "278M",
+      "size_gb": 1.11,
+      "dim": 768,
+      "passage_prefix": "passage: ",
+      "query_prefix": "query: ",
+      "max_seq_length": 512,
+      "files": ["*.json", "*.txt", "*.model", "*.safetensors", "1_Pooling/*"],
+      "ignore": ["*.bin", "*.onnx", "onnx/*", "openvino/*", "*.h5", "*.msgpack"]
+    },
+    {
+      "key": "multilingual-e5-large",
+      "repo": "intfloat/multilingual-e5-large",
+      "params": "560M",
+      "size_gb": 2.24,
+      "dim": 1024,
+      "passage_prefix": "passage: ",
+      "query_prefix": "query: ",
+      "max_seq_length": 512,
+      "files": ["*.json", "*.txt", "*.model", "*.safetensors", "1_Pooling/*"],
+      "ignore": ["*.bin", "*.onnx", "onnx/*", "openvino/*", "*.h5", "*.msgpack"]
+    }
+  ],
+  "llms": [
+    {
+      "name": "Qwen2.5-0.5B-Instruct",
+      "repo": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+      "filename": null,
+      "params_b": 0.5,
+      "size_gb": 0.4,
+      "ctx": 4096,
+      "min_ram_gb": 1.0
+    },
+    {
+      "name": "Qwen2.5-1.5B-Instruct",
+      "repo": "Qwen/Qwen2.5-1.5B-Instruct-GGUF",
+      "filename": null,
+      "params_b": 1.5,
+      "size_gb": 1.12,
+      "ctx": 4096,
+      "min_ram_gb": 2.0
+    },
+    {
+      "name": "Qwen2.5-3B-Instruct",
+      "repo": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+      "filename": null,
+      "params_b": 3.0,
+      "size_gb": 2.1,
+      "ctx": 4096,
+      "min_ram_gb": 3.5
+    },
+    {
+      "name": "Llama-3.2-3B-Instruct",
+      "repo": "bartowski/Llama-3.2-3B-Instruct-GGUF",
+      "filename": null,
+      "params_b": 3.2,
+      "size_gb": 2.02,
+      "ctx": 4096,
+      "min_ram_gb": 3.5
+    },
+    {
+      "name": "Qwen2.5-7B-Instruct",
+      "repo": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+      "filename": null,
+      "params_b": 7.6,
+      "size_gb": 4.68,
+      "ctx": 4096,
+      "min_ram_gb": 7.0
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# runtime data: venvs, models, database, logs, selection (created on first run)
+data/runtime/
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# secrets
+.env
+*.env
+
+# evaluation output
+eval/last_report.json

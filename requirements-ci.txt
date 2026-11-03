@@ -1,0 +1,10 @@
+# Everything the tests import, without the two model environments (torch, llama.cpp).
+# Mirrors the "gateway" list in src/cli/deps.py plus the test tools.
+fastapi
+uvicorn[standard]
+python-multipart
+numpy
+psutil
+openpyxl
+huggingface_hub
+-r requirements-dev.txt
